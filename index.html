@@ -1,0 +1,248 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover">
+<title>Amigo secreto: lista de regalos</title>
+<link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Atkinson+Hyperlegible:wght@400;700&display=swap">
+<style>
+:root{
+  --bg:#f7f9f6; --card:#ffffff; --ink:#1b1f1c; --muted:#4a554e; --line:#c9d3cc;
+  --pine:#1f4d3a; --pine-ink:#ffffff; --red:#a8232b; --red-ink:#ffffff; --focus:#0b57d0; --soft:#e6efe9;
+  color-scheme: light;
+  box-sizing:border-box;
+  padding-top:env(safe-area-inset-top,0px);
+  padding-bottom:env(safe-area-inset-bottom,0px);
+}
+@media (prefers-color-scheme: dark){
+  :root:not([data-theme="light"]){
+    --bg:#121a15; --card:#1b251f; --ink:#f2f6f3; --muted:#b9c6bd; --line:#3a4a40;
+    --pine:#7fcfa4; --pine-ink:#0c1f15; --red:#ff9aa0; --red-ink:#2a0a0d; --focus:#8ab4ff; --soft:#233229;
+    color-scheme: dark;
+  }
+}
+:root[data-theme="dark"]{
+  --bg:#121a15; --card:#1b251f; --ink:#f2f6f3; --muted:#b9c6bd; --line:#3a4a40;
+  --pine:#7fcfa4; --pine-ink:#0c1f15; --red:#ff9aa0; --red-ink:#2a0a0d; --focus:#8ab4ff; --soft:#233229;
+  color-scheme: dark;
+}
+html{scroll-padding-top:env(safe-area-inset-top,0px)}
+*,*::before,*::after{box-sizing:inherit}
+body{margin:0;background:var(--bg);color:var(--ink);font-family:"Atkinson Hyperlegible",Verdana,Arial,sans-serif;font-size:1.25rem;line-height:1.55}
+main{max-width:980px;margin:0 auto;padding:1.5rem 1rem 4rem}
+h1{font-size:2.2rem;line-height:1.2;margin:.5rem 0 .5rem;color:var(--pine)}
+h2{font-size:1.6rem;margin:0 0 1rem}
+.intro{color:var(--muted);margin:0 0 1.5rem;max-width:34em}
+.panel{background:var(--card);border:2px solid var(--line);border-radius:14px;padding:1.25rem}
+label,.lbl{display:block;font-weight:700;margin:1rem 0 .35rem}
+.hint{font-weight:400;color:var(--muted);font-size:1.05rem}
+input[type=text],textarea{width:100%;font:inherit;color:var(--ink);background:var(--bg);border:2px solid var(--muted);border-radius:10px;padding:.75rem .9rem;min-height:3.4rem}
+textarea{min-height:5.5rem;resize:vertical}
+.btn{display:inline-flex;align-items:center;justify-content:center;gap:.5rem;font:inherit;font-weight:700;min-height:3.5rem;padding:.7rem 1.4rem;border-radius:12px;border:2px solid var(--pine);background:var(--pine);color:var(--pine-ink);cursor:pointer}
+.btn.alt{background:transparent;color:var(--pine)}
+.btn.del{background:transparent;border-color:var(--red);color:var(--red)}
+.btn.del.sure{background:var(--red);color:var(--red-ink)}
+.btn.big{width:100%;margin-top:1.5rem;font-size:1.35rem;min-height:4rem}
+:focus-visible{outline:4px solid var(--focus);outline-offset:3px}
+input[type=file]{position:absolute;opacity:0;width:1px;height:1px}
+#pick:focus-within{outline:4px solid var(--focus);outline-offset:3px}
+#preview{display:none;width:100%;max-height:300px;object-fit:contain;background:var(--soft);border-radius:10px;margin-top:.8rem}
+#msg{min-height:1.6em;margin:.9rem 0 0;font-weight:700}
+#msg.err{color:var(--red)}
+#msg.ok{color:var(--pine)}
+.list-head{display:flex;flex-wrap:wrap;align-items:baseline;justify-content:space-between;gap:.5rem;margin:2.5rem 0 1rem}
+.list-head h2{margin:0}
+.grid{display:grid;grid-template-columns:repeat(auto-fill,minmax(280px,1fr));gap:1.25rem}
+.gift{background:var(--card);border:2px solid var(--line);border-radius:14px;overflow:hidden;display:flex;flex-direction:column}
+.gift img{width:100%;aspect-ratio:4/3;object-fit:cover;background:var(--soft)}
+.noimg{aspect-ratio:4/3;display:grid;place-items:center;background:var(--soft);color:var(--muted);font-size:1.1rem}
+.gift .body{padding:1rem 1.1rem 1.2rem;display:flex;flex-direction:column;gap:.3rem;flex:1}
+.gift h3{margin:0;font-size:1.45rem;line-height:1.25}
+.who{color:var(--pine);font-weight:700;margin:0}
+.note{margin:0;color:var(--muted);overflow-wrap:anywhere}
+.gift .btn{margin-top:auto;align-self:flex-start}
+.empty{border:2px dashed var(--line);border-radius:14px;padding:2rem 1.25rem;text-align:center;color:var(--muted)}
+.notice{border:2px solid var(--red);border-radius:12px;padding:1rem 1.1rem;margin:1rem 0;font-weight:700}
+.top{display:flex;flex-wrap:wrap;gap:1rem;align-items:center;margin:0 0 1.25rem}
+.top .btn{flex:1 1 260px;font-size:1.35rem;min-height:4rem}
+[hidden]{display:none!important}
+.sub{display:flex;gap:.6rem;margin-top:1.25rem}
+.sub .btn{flex:1}
+@media (max-width:520px){h1{font-size:1.8rem}body{font-size:1.2rem}}
+@media (prefers-reduced-motion:reduce){*{transition:none!important;animation:none!important}}
+</style>
+</head>
+<body>
+<main>
+  <h1>Regalos del amigo secreto</h1>
+  <p class="intro">Aquí aparecen los regalos que quiere cada persona. Para agregar el tuyo, toca el botón verde.</p>
+  <div id="aviso" class="notice" hidden></div>
+
+  <div class="top">
+    <button class="btn" id="abrir" type="button">Agregar mi regalo</button>
+  </div>
+
+  <section class="panel" id="form" aria-labelledby="t-nuevo" hidden>
+    <h2 id="t-nuevo">Agregar mi regalo</h2>
+
+    <label for="nombre">Tu nombre</label>
+    <input type="text" id="nombre" autocomplete="given-name">
+
+    <label for="regalo">¿Qué regalo te gustaría?</label>
+    <input type="text" id="regalo" placeholder="Por ejemplo: una bufanda de lana">
+
+    <label for="detalle">Detalles <span class="hint">(color, talla, tienda; es opcional)</span></label>
+    <textarea id="detalle"></textarea>
+
+    <span class="lbl">Foto del regalo <span class="hint">(opcional)</span></span>
+    <label class="btn alt" id="pick" for="foto" style="margin:0">Tomar o elegir una foto</label>
+    <input type="file" id="foto" accept="image/*">
+    <img id="preview" alt="Vista previa de la foto elegida">
+
+    <div class="sub">
+      <button class="btn" id="guardar" type="button">Guardar regalo</button>
+      <button class="btn alt" id="cancelar" type="button">Cancelar</button>
+    </div>
+    <p id="msg" role="status" aria-live="polite"></p>
+  </section>
+
+  <div class="list-head">
+    <h2>Todos los regalos</h2>
+    <span id="count" class="hint"></span>
+  </div>
+  <div id="lista" class="grid"></div>
+</main>
+
+<script type="module">
+import { initializeApp } from "https://www.gstatic.com/firebasejs/10.12.2/firebase-app.js";
+import { getFirestore, collection, addDoc, deleteDoc, doc, onSnapshot, query, orderBy, limit } from "https://www.gstatic.com/firebasejs/10.12.2/firebase-firestore.js";
+import { getAuth, signInAnonymously, onAuthStateChanged } from "https://www.gstatic.com/firebasejs/10.12.2/firebase-auth.js";
+
+/* PASO 7 del README: pega aquí los datos de tu proyecto de Firebase */
+const firebaseConfig = {
+  apiKey: "AIzaSyB0EazZiJISCsNBZk10XBwk2GxEH5hnQMY",
+  authDomain: "lista-amigo-secreto.firebaseapp.com",
+  projectId: "lista-amigo-secreto",
+  storageBucket: "lista-amigo-secreto.firebasestorage.app",
+  messagingSenderId: "690611971137",
+  appId: "1:690611971137:web:823f17f330de37b24a52c0",
+  measurementId: "G-ZJV3L4PCL7"
+};
+
+
+var photo = "", myId = "", gifts = [], busy = false, db = null, auth = null;
+var $ = function(id){ return document.getElementById(id); };
+function el(tag, cls, text){ var n = document.createElement(tag); if(cls) n.className = cls; if(text) n.textContent = text; return n; }
+function say(text, kind){ var m = $("msg"); m.textContent = text; m.className = kind || ""; }
+function aviso(text){ var a = $("aviso"); a.textContent = text || ""; a.hidden = !text; }
+
+function resize(file, cb){
+  var reader = new FileReader();
+  reader.onerror = function(){ cb(""); };
+  reader.onload = function(){
+    var img = new Image();
+    img.onerror = function(){ cb(""); };
+    img.onload = function(){
+      var max = 700, s = Math.min(1, max / Math.max(img.width, img.height));
+      var c = document.createElement("canvas");
+      c.width = Math.round(img.width * s); c.height = Math.round(img.height * s);
+      c.getContext("2d").drawImage(img, 0, 0, c.width, c.height);
+      cb(c.toDataURL("image/jpeg", 0.7));
+    };
+    img.src = reader.result;
+  };
+  reader.readAsDataURL(file);
+}
+
+$("abrir").addEventListener("click", function(){
+  $("form").hidden = false; $("abrir").hidden = true;
+  $("form").scrollIntoView({behavior:"smooth", block:"start"});
+  $("nombre").focus({preventScroll:true});
+});
+function cerrar(){
+  $("form").hidden = true; $("abrir").hidden = false;
+  $("regalo").value = ""; $("detalle").value = ""; $("foto").value = "";
+  photo = ""; $("preview").style.display = "none"; $("pick").textContent = "Tomar o elegir una foto"; say("");
+}
+$("cancelar").addEventListener("click", cerrar);
+
+$("foto").addEventListener("change", function(e){
+  var f = e.target.files && e.target.files[0];
+  if(!f) return;
+  say("Cargando la foto…");
+  resize(f, function(data){
+    var p = $("preview");
+    if(!data){ photo = ""; p.style.display = "none"; say("No se pudo leer esa foto. Prueba con otra.", "err"); return; }
+    photo = data; p.src = data; p.style.display = "block";
+    $("pick").textContent = "Cambiar la foto";
+    say("Foto lista.", "ok");
+  });
+});
+
+$("guardar").addEventListener("click", async function(){
+  if(!db){ say("Aún no se puede guardar. Revisa el aviso de arriba.", "err"); return; }
+  var nombre = $("nombre").value.trim(), regalo = $("regalo").value.trim();
+  if(!nombre){ say("Falta escribir tu nombre.", "err"); $("nombre").focus(); return; }
+  if(!regalo){ say("Falta escribir el nombre del regalo.", "err"); $("regalo").focus(); return; }
+  if(!myId){ say("Espera un momento e intenta de nuevo.", "err"); return; }
+  if(busy) return;
+  busy = true; $("guardar").disabled = true; say("Guardando…");
+  try {
+    await addDoc(collection(db, "gifts"), { nombre: nombre.slice(0,60), regalo: regalo.slice(0,100), detalle: $("detalle").value.trim().slice(0,300), foto: photo, owner: myId, ts: Date.now() });
+    cerrar(); say("¡Regalo guardado! Ya lo pueden ver todos.", "ok");
+  } catch(e){
+    say("No se pudo guardar. Revisa tu internet e intenta de nuevo.", "err");
+  }
+  busy = false; $("guardar").disabled = false;
+});
+
+function render(){
+  var box = $("lista"); box.textContent = "";
+  $("count").textContent = gifts.length === 1 ? "1 regalo" : gifts.length + " regalos";
+  if(!gifts.length){
+    var e = el("div", "empty", "Aún no hay regalos. Cuando alguien guarde el primero aparecerá aquí.");
+    e.style.gridColumn = "1 / -1"; box.appendChild(e); return;
+  }
+  gifts.forEach(function(g){
+    var d = g.data, card = el("article", "gift");
+    if(d.foto){ var im = document.createElement("img"); im.src = d.foto; im.alt = "Foto de: " + d.regalo; card.appendChild(im); }
+    else card.appendChild(el("div", "noimg", "Sin foto"));
+    var body = el("div", "body");
+    body.appendChild(el("h3", "", d.regalo || ""));
+    body.appendChild(el("p", "who", "Lo quiere: " + (d.nombre || "")));
+    if(d.detalle) body.appendChild(el("p", "note", d.detalle));
+    if(myId && d.owner === myId){
+      var b = el("button", "btn del", "Quitar mi regalo"), t; b.type = "button";
+      b.addEventListener("click", function(){
+        if(!b.classList.contains("sure")){
+          b.classList.add("sure"); b.textContent = "Toca otra vez para quitar";
+          t = setTimeout(function(){ b.classList.remove("sure"); b.textContent = "Quitar mi regalo"; }, 4000);
+          return;
+        }
+        clearTimeout(t);
+        deleteDoc(doc(db, "gifts", g.id)).catch(function(){ aviso("No se pudo quitar el regalo. Intenta de nuevo."); });
+      });
+      body.appendChild(b);
+    }
+    card.appendChild(body); box.appendChild(card);
+  });
+}
+
+render();
+if(firebaseConfig.apiKey.indexOf("PEGA") === 0){
+  aviso("Falta conectar la base de datos. Sigue los pasos del archivo LEEME.md.");
+} else {
+  try {
+    var app = initializeApp(firebaseConfig);
+    db = getFirestore(app); auth = getAuth(app);
+    onAuthStateChanged(auth, function(u){ if(u) myId = u.uid; render(); });
+    signInAnonymously(auth).catch(function(){ aviso("No se pudo entrar. Revisa el paso de “Authentication” en LEEME.md."); });
+    onSnapshot(query(collection(db, "gifts"), orderBy("ts", "desc"), limit(300)), function(snap){
+      gifts = snap.docs.map(function(x){ return { id: x.id, data: x.data() }; });
+      render();
+    }, function(){ aviso("No se pudo cargar la lista. Recarga la página."); });
+  } catch(e){ aviso("Hay un error en los datos de Firebase. Revisa el paso 7 de LEEME.md."); }
+}
+</script>
+</body>
+</html>
