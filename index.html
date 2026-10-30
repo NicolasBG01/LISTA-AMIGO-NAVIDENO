@@ -3,117 +3,238 @@
 <head>
 <meta charset="utf-8">
 <meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover">
-<title>Amigo secreto: lista de regalos</title>
+<title>🎄 Amigo secreto: lista de regalos 🎁</title>
 <link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Atkinson+Hyperlegible:wght@400;700&display=swap">
 <style>
-:root{
-  --bg:#f7f9f6; --card:#ffffff; --ink:#1b1f1c; --muted:#4a554e; --line:#c9d3cc;
-  --pine:#1f4d3a; --pine-ink:#ffffff; --red:#a8232b; --red-ink:#ffffff; --focus:#0b57d0; --soft:#e6efe9;
-  color-scheme: light;
-  box-sizing:border-box;
-  padding-top:env(safe-area-inset-top,0px);
-  padding-bottom:env(safe-area-inset-bottom,0px);
+:root {
+  --bg-cream: #f4efe6;
+  --card-bg: rgba(255, 255, 255, 0.96);
+  --ink: #1b261d;
+  --muted: #4a5a4e;
+  --line: #c3d2c6;
+  --pine: #1b4d36;
+  --pine-hover: #123826;
+  --pine-ink: #ffffff;
+  --red: #a81c24;
+  --red-hover: #821218;
+  --red-ink: #ffffff;
+  --gold: #d4af37;
+  --focus: #0b57d0;
+  --soft: #eaf1ec;
+  box-sizing: border-box;
+  padding-top: env(safe-area-inset-top,0px);
+  padding-bottom: env(safe-area-inset-bottom,0px);
 }
-@media (prefers-color-scheme: dark){
-  :root:not([data-theme="light"]){
-    --bg:#121a15; --card:#1b251f; --ink:#f2f6f3; --muted:#b9c6bd; --line:#3a4a40;
-    --pine:#7fcfa4; --pine-ink:#0c1f15; --red:#ff9aa0; --red-ink:#2a0a0d; --focus:#8ab4ff; --soft:#233229;
-    color-scheme: dark;
-  }
+
+*, *::before, *::after { box-sizing: inherit; }
+
+body {
+  margin: 0;
+  background-color: var(--bg-cream);
+  background-image: url('fondo.jpg');
+  background-repeat: repeat;
+  background-size: 320px auto;
+  background-attachment: fixed;
+  color: var(--ink);
+  font-family: "Atkinson Hyperlegible", Verdana, Arial, sans-serif;
+  font-size: 1.25rem;
+  line-height: 1.55;
 }
-html{scroll-padding-top:env(safe-area-inset-top,0px)}
-*,*::before,*::after{box-sizing:inherit}
-body{margin:0;background:var(--bg);color:var(--ink);font-family:"Atkinson Hyperlegible",Verdana,Arial,sans-serif;font-size:1.25rem;line-height:1.55}
-main{max-width:980px;margin:0 auto;padding:1.5rem 1rem 4rem}
-h1{font-size:2.2rem;line-height:1.2;margin:.5rem 0 .5rem;color:var(--pine)}
-h2{font-size:1.6rem;margin:0 0 1rem}
-.intro{color:var(--muted);margin:0 0 1.5rem;max-width:34em}
-.panel{background:var(--card);border:2px solid var(--line);border-radius:14px;padding:1.25rem}
-label,.lbl{display:block;font-weight:700;margin:1rem 0 .35rem}
-.hint{font-weight:400;color:var(--muted);font-size:1.05rem}
-input[type=text],textarea{width:100%;font:inherit;color:var(--ink);background:var(--bg);border:2px solid var(--muted);border-radius:10px;padding:.75rem .9rem;min-height:3.4rem}
-textarea{min-height:5.5rem;resize:vertical}
-.btn{display:inline-flex;align-items:center;justify-content:center;gap:.5rem;font:inherit;font-weight:700;min-height:3.5rem;padding:.7rem 1.4rem;border-radius:12px;border:2px solid var(--pine);background:var(--pine);color:var(--pine-ink);cursor:pointer}
-.btn.alt{background:transparent;color:var(--pine)}
-.btn.del{background:transparent;border-color:var(--red);color:var(--red)}
-.btn.del.sure{background:var(--red);color:var(--red-ink)}
-:focus-visible{outline:4px solid var(--focus);outline-offset:3px}
-input[type=file]{position:absolute;opacity:0;width:1px;height:1px}
-#pick:focus-within{outline:4px solid var(--focus);outline-offset:3px}
-#preview{display:none;width:100%;max-height:300px;object-fit:contain;background:var(--soft);border-radius:10px;margin-top:.8rem}
-#msg{min-height:1.6em;margin:.9rem 0 0;font-weight:700}
-#msg.err{color:var(--red)}
-#msg.ok{color:var(--pine)}
-.list-head{display:flex;flex-wrap:wrap;align-items:baseline;justify-content:space-between;gap:.5rem;margin:2.5rem 0 1rem}
-.list-head h2{margin:0}
 
-/* ESTILOS PARA EL MENÚ DESPLEGABLE DE CADA PERSONA */
-details.person { background:var(--card); border:2px solid var(--line); border-radius:14px; margin-bottom:1.25rem; overflow:hidden; }
-summary.name-row { padding:1.25rem; font-size:1.4rem; font-weight:700; color:var(--pine); cursor:pointer; list-style:none; display:flex; justify-content:space-between; align-items:center; }
-summary.name-row::-webkit-details-marker { display:none; }
-summary.name-row::after { content:"▼"; font-size:1.1rem; color:var(--muted); }
-details[open] summary.name-row::after { content:"▲"; }
-details[open] summary.name-row { border-bottom:2px solid var(--line); }
-.person-gifts { padding:1.25rem; background:var(--bg); }
+main {
+  max-width: 980px;
+  margin: 2rem auto;
+  padding: 1.5rem 1.25rem 4rem;
+  background: var(--card-bg);
+  border-radius: 20px;
+  box-shadow: 0 10px 30px rgba(0,0,0,0.15);
+  border: 3px solid var(--pine);
+}
 
-.grid{display:grid;grid-template-columns:repeat(auto-fill,minmax(280px,1fr));gap:1.25rem}
-.gift{background:var(--card);border:2px solid var(--line);border-radius:14px;overflow:hidden;display:flex;flex-direction:column}
-.gift img{width:100%;aspect-ratio:4/3;object-fit:cover;background:var(--soft)}
-.noimg{aspect-ratio:4/3;display:grid;place-items:center;background:var(--soft);color:var(--muted);font-size:1.1rem}
-.gift .body{padding:1rem 1.1rem 1.2rem;display:flex;flex-direction:column;gap:.3rem;flex:1}
-.gift h3{margin:0;font-size:1.45rem;line-height:1.25}
-.note{margin:0;color:var(--muted);overflow-wrap:anywhere}
-.gift .btn{margin-top:auto;align-self:flex-start}
-.empty{border:2px dashed var(--line);border-radius:14px;padding:2rem 1.25rem;text-align:center;color:var(--muted)}
-.notice{border:2px solid var(--red);border-radius:12px;padding:1rem 1.1rem;margin:1rem 0;font-weight:700}
-.top{display:flex;flex-wrap:wrap;gap:1rem;align-items:center;margin:0 0 1.25rem}
-.top .btn{flex:1 1 260px;font-size:1.35rem;min-height:4rem}
-[hidden]{display:none!important}
-.sub{display:flex;gap:.6rem;margin-top:1.25rem}
-.sub .btn{flex:1}
-@media (max-width:520px){h1{font-size:1.8rem}body{font-size:1.2rem}}
-@media (prefers-reduced-motion:reduce){*{transition:none!important;animation:none!important}}
+h1 {
+  font-size: 2.3rem;
+  line-height: 1.2;
+  margin: 0.5rem 0;
+  color: var(--red);
+  text-align: center;
+}
+
+h2 { font-size: 1.6rem; margin: 0 0 1rem; color: var(--pine); }
+
+.intro {
+  color: var(--muted);
+  margin: 0 auto 1.5rem;
+  max-width: 36em;
+  text-align: center;
+}
+
+.panel {
+  background: #ffffff;
+  border: 2px solid var(--gold);
+  border-radius: 16px;
+  padding: 1.5rem;
+  box-shadow: 0 4px 12px rgba(0,0,0,0.05);
+}
+
+label, .lbl { display: block; font-weight: 700; margin: 1rem 0 .35rem; color: var(--pine); }
+.hint { font-weight: 400; color: var(--muted); font-size: 1.05rem; }
+
+input[type=text], textarea {
+  width: 100%;
+  font: inherit;
+  color: var(--ink);
+  background: var(--bg-cream);
+  border: 2px solid var(--line);
+  border-radius: 10px;
+  padding: .75rem .9rem;
+  min-height: 3.4rem;
+}
+textarea { min-height: 5.5rem; resize: vertical; }
+
+.btn {
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  gap: .5rem;
+  font: inherit;
+  font-weight: 700;
+  min-height: 3.5rem;
+  padding: .7rem 1.4rem;
+  border-radius: 12px;
+  border: 2px solid var(--pine);
+  background: var(--pine);
+  color: var(--pine-ink);
+  cursor: pointer;
+  transition: background 0.2s ease, transform 0.1s ease;
+}
+.btn:hover { background: var(--pine-hover); }
+.btn.alt { background: transparent; color: var(--pine); border-color: var(--pine); }
+.btn.alt:hover { background: var(--soft); }
+.btn.del { background: transparent; border-color: var(--red); color: var(--red); }
+.btn.del:hover { background: #fde8e8; }
+.btn.del.sure { background: var(--red); color: var(--red-ink); }
+
+:focus-visible { outline: 4px solid var(--focus); outline-offset: 3px; }
+input[type=file] { position: absolute; opacity: 0; width: 1px; height: 1px; }
+
+#pick:focus-within { outline: 4px solid var(--focus); outline-offset: 3px; }
+#preview { display: none; width: 100%; max-height: 300px; object-fit: contain; background: var(--soft); border-radius: 10px; margin-top: .8rem; }
+#msg { min-height: 1.6em; margin: .9rem 0 0; font-weight: 700; }
+#msg.err { color: var(--red); }
+#msg.ok { color: var(--pine); }
+
+.list-head {
+  display: flex;
+  flex-wrap: wrap;
+  align-items: baseline;
+  justify-content: space-between;
+  gap: .5rem;
+  margin: 2.5rem 0 1rem;
+  border-bottom: 2px dashed var(--gold);
+  padding-bottom: 0.5rem;
+}
+.list-head h2 { margin: 0; }
+
+/* DESPLEGABLES NAVIDEÑOS */
+details.person {
+  background: #ffffff;
+  border: 2px solid var(--pine);
+  border-radius: 14px;
+  margin-bottom: 1.25rem;
+  overflow: hidden;
+  box-shadow: 0 4px 10px rgba(0,0,0,0.04);
+}
+summary.name-row {
+  padding: 1.1rem 1.25rem;
+  font-size: 1.4rem;
+  font-weight: 700;
+  color: var(--pine);
+  cursor: pointer;
+  list-style: none;
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  background: #fdfbf7;
+}
+summary.name-row::-webkit-details-marker { display: none; }
+summary.name-row::after { content: "▼"; font-size: 1rem; color: var(--red); }
+details[open] summary.name-row::after { content: "▲"; }
+details[open] summary.name-row { border-bottom: 2px solid var(--line); background: #f4efe6; }
+
+.person-gifts { padding: 1.25rem; background: #faf8f5; }
+.grid { display: grid; grid-template-columns: repeat(auto-fill, minmax(270px, 1fr)); gap: 1.25rem; }
+
+.gift {
+  background: #ffffff;
+  border: 2px solid var(--line);
+  border-radius: 14px;
+  overflow: hidden;
+  display: flex;
+  flex-direction: column;
+}
+.gift img { width: 100%; aspect-ratio: 4/3; object-fit: cover; background: var(--soft); }
+.noimg { aspect-ratio: 4/3; display: grid; place-items: center; background: var(--soft); color: var(--muted); font-size: 1.1rem; }
+.gift .body { padding: 1rem 1.1rem 1.2rem; display: flex; flex-direction: column; gap: .3rem; flex: 1; }
+.gift h3 { margin: 0; font-size: 1.4rem; line-height: 1.25; color: var(--red); }
+.note { margin: 0; color: var(--muted); overflow-wrap: anywhere; }
+.gift .btn { margin-top: auto; align-self: flex-start; }
+
+.empty { border: 2px dashed var(--line); border-radius: 14px; padding: 2rem 1.25rem; text-align: center; color: var(--muted); }
+.notice { border: 2px solid var(--red); background: #fde8e8; border-radius: 12px; padding: 1rem 1.1rem; margin: 1rem 0; font-weight: 700; color: var(--red); }
+
+.top { display: flex; flex-wrap: wrap; gap: 1rem; align-items: center; margin: 0 0 1.25rem; }
+.top .btn { flex: 1 1 260px; font-size: 1.35rem; min-height: 4rem; background: var(--red); border-color: var(--red); }
+.top .btn:hover { background: var(--red-hover); }
+
+[hidden] { display: none !important; }
+.sub { display: flex; gap: .6rem; margin-top: 1.25rem; }
+.sub .btn { flex: 1; }
+
+@media (max-width: 520px) {
+  main { margin: 0; border-radius: 0; border: none; }
+  h1 { font-size: 1.8rem; }
+  body { font-size: 1.15rem; }
+}
 </style>
 </head>
 <body>
 <main>
-  <h1>Regalos del amigo secreto</h1>
-  <p class="intro">Aquí aparecen los regalos que quiere cada persona. Para agregar los tuyos (hasta 3 opciones), toca el botón verde y llena el formulario por cada uno.</p>
+  <h1>🎄 Regalos del Amigo Secreto 🎁</h1>
+  <p class="intro">Toca el botón rojo para agregar tus opciones de regalo. Cada participante puede desplegar su nombre para ver lo que ha pedido.</p>
   <div id="aviso" class="notice" hidden></div>
 
   <div class="top">
-    <button class="btn" id="abrir" type="button">Agregar mi regalo</button>
+    <button class="btn" id="abrir" type="button">✨ Agregar mi opción de regalo</button>
   </div>
 
   <section class="panel" id="form" aria-labelledby="t-nuevo" hidden>
-    <h2 id="t-nuevo">Agregar opción de regalo</h2>
+    <h2 id="t-nuevo">🎁 Agregar opción de regalo</h2>
 
     <label for="nombre">Tu nombre</label>
-    <input type="text" id="nombre" autocomplete="given-name">
+    <input type="text" id="nombre" autocomplete="given-name" placeholder="Escribe tu nombre completo">
 
     <label for="regalo">¿Qué regalo te gustaría?</label>
-    <input type="text" id="regalo" placeholder="Por ejemplo: una bufanda de lana">
+    <input type="text" id="regalo" placeholder="Por ejemplo: Un libro, saco talla M, etc.">
 
-    <label for="detalle">Detalles <span class="hint">(color, talla, tienda; es opcional)</span></label>
+    <label for="detalle">Detalles <span class="hint">(color, talla, tienda u enlace opcional)</span></label>
     <textarea id="detalle"></textarea>
 
     <span class="lbl">Foto del regalo <span class="hint">(opcional)</span></span>
-    <label class="btn alt" id="pick" for="foto" style="margin:0">Tomar o elegir una foto</label>
+    <label class="btn alt" id="pick" for="foto" style="margin:0">📷 Tomar o elegir foto</label>
     <input type="file" id="foto" accept="image/*">
     <img id="preview" alt="Vista previa de la foto elegida">
 
     <div class="sub">
-      <button class="btn" id="guardar" type="button">Guardar regalo</button>
-      <button class="btn alt" id="cancelar" type="button">Cancelar</button>
+      <button class="btn" id="guardar" type="button">💾 Guardar regalo</button>
+      <button class="btn alt" id="cancelar" type="button">❌ Cancelar</button>
     </div>
     <p id="msg" role="status" aria-live="polite"></p>
   </section>
 
   <div class="list-head">
-    <h2>Lista por participante</h2>
+    <h2>👥 Lista por participante</h2>
     <span id="count" class="hint"></span>
   </div>
-  <!-- El div lista ya no tiene la clase grid directamente -->
   <div id="lista"></div>
 </main>
 
@@ -164,7 +285,7 @@ $("abrir").addEventListener("click", function(){
 function cerrar(){
   $("form").hidden = true; $("abrir").hidden = false;
   $("regalo").value = ""; $("detalle").value = ""; $("foto").value = "";
-  photo = ""; $("preview").style.display = "none"; $("pick").textContent = "Tomar o elegir una foto"; say("");
+  photo = ""; $("preview").style.display = "none"; $("pick").textContent = "📷 Tomar o elegir foto"; say("");
 }
 $("cancelar").addEventListener("click", cerrar);
 
@@ -174,9 +295,9 @@ $("foto").addEventListener("change", function(e){
   say("Cargando la foto…");
   resize(f, function(data){
     var p = $("preview");
-    if(!data){ photo = ""; p.style.display = "none"; say("Error. Prueba con otra.", "err"); return; }
+    if(!data){ photo = ""; p.style.display = "none"; say("Error al leer la foto. Intenta otra.", "err"); return; }
     photo = data; p.src = data; p.style.display = "block";
-    $("pick").textContent = "Cambiar la foto";
+    $("pick").textContent = "🔄 Cambiar la foto";
     say("Foto lista.", "ok");
   });
 });
@@ -184,16 +305,16 @@ $("foto").addEventListener("change", function(e){
 $("guardar").addEventListener("click", async function(){
   if(!db){ say("Error de base de datos.", "err"); return; }
   var nombre = $("nombre").value.trim(), regalo = $("regalo").value.trim();
-  if(!nombre){ say("Falta tu nombre.", "err"); $("nombre").focus(); return; }
-  if(!regalo){ say("Falta el regalo.", "err"); $("regalo").focus(); return; }
-  if(!myId){ say("Espera un momento.", "err"); return; }
+  if(!nombre){ say("Escribe tu nombre.", "err"); $("nombre").focus(); return; }
+  if(!regalo){ say("Escribe la opción de regalo.", "err"); $("regalo").focus(); return; }
+  if(!myId){ say("Espera un momento e intenta de nuevo.", "err"); return; }
   if(busy) return;
   busy = true; $("guardar").disabled = true; say("Guardando…");
   try {
     await addDoc(collection(db, "gifts"), { nombre: nombre.slice(0,60), regalo: regalo.slice(0,100), detalle: $("detalle").value.trim().slice(0,300), foto: photo, owner: myId, ts: Date.now() });
-    cerrar(); say("¡Regalo guardado!", "ok");
+    cerrar(); say("¡Opción guardada!", "ok");
   } catch(e){
-    say("Error de conexión.", "err");
+    say("Error al guardar. Revisa tu conexión.", "err");
   }
   busy = false; $("guardar").disabled = false;
 });
@@ -203,11 +324,10 @@ function render(){
   
   if(!gifts.length){
     $("count").textContent = "0 participantes";
-    var e = el("div", "empty", "Aún no hay regalos.");
+    var e = el("div", "empty", "Aún no hay regalos registrados. ¡Sé el primero en agregar el tuyo!");
     box.appendChild(e); return;
   }
 
-  // 1. Agrupar los regalos por nombre (ignorando mayúsculas/minúsculas)
   var grupos = {};
   gifts.forEach(function(g){
     var nombreReal = (g.data.nombre || "Sin nombre").trim();
@@ -219,35 +339,33 @@ function render(){
   var cantPersonas = Object.keys(grupos).length;
   $("count").textContent = cantPersonas + (cantPersonas === 1 ? " participante" : " participantes");
 
-  // 2. Crear los menús desplegables por persona
   Object.values(grupos).forEach(function(persona){
     var details = el("details", "person");
-    var summary = el("summary", "name-row", persona.nombre + " (" + persona.regalos.length + " opciones)");
+    var summary = el("summary", "name-row", "🎁 " + persona.nombre + " (" + persona.regalos.length + " opciones)");
     details.appendChild(summary);
 
     var giftsContainer = el("div", "person-gifts");
-    var grid = el("div", "grid"); // El grid ahora vive dentro del contenedor de la persona
+    var grid = el("div", "grid");
 
     persona.regalos.forEach(function(g){
       var d = g.data, card = el("article", "gift");
-      if(d.foto){ var im = document.createElement("img"); im.src = d.foto; im.alt = "Foto"; card.appendChild(im); }
+      if(d.foto){ var im = document.createElement("img"); im.src = d.foto; im.alt = "Foto del regalo"; card.appendChild(im); }
       else card.appendChild(el("div", "noimg", "Sin foto"));
       
       var body = el("div", "body");
       body.appendChild(el("h3", "", d.regalo || ""));
-      // Se elimina la línea "Lo quiere: Nombre" porque ya está en el título del desplegable
       if(d.detalle) body.appendChild(el("p", "note", d.detalle));
       
       if(myId && d.owner === myId){
-        var b = el("button", "btn del", "Quitar"), t; b.type = "button";
+        var b = el("button", "btn del", "🗑️ Quitar"), t; b.type = "button";
         b.addEventListener("click", function(){
           if(!b.classList.contains("sure")){
-            b.classList.add("sure"); b.textContent = "¿Seguro?";
-            t = setTimeout(function(){ b.classList.remove("sure"); b.textContent = "Quitar"; }, 4000);
+            b.classList.add("sure"); b.textContent = "¿Confirmar?";
+            t = setTimeout(function(){ b.classList.remove("sure"); b.textContent = "🗑️ Quitar"; }, 4000);
             return;
           }
           clearTimeout(t);
-          deleteDoc(doc(db, "gifts", g.id)).catch(function(){ aviso("Error al quitar."); });
+          deleteDoc(doc(db, "gifts", g.id)).catch(function(){ aviso("No se pudo eliminar."); });
         });
         body.appendChild(b);
       }
@@ -268,8 +386,8 @@ try {
   onSnapshot(query(collection(db, "gifts"), orderBy("ts", "desc"), limit(300)), function(snap){
     gifts = snap.docs.map(function(x){ return { id: x.id, data: x.data() }; });
     render();
-  }, function(){ aviso("Error al cargar la lista."); });
-} catch(e){ aviso("Error en los datos de Firebase."); }
+  }, function(){ aviso("No se pudieron cargar los datos."); });
+} catch(e){ aviso("Error al conectar con Firebase."); }
 </script>
 </body>
 </html>
