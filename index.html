@@ -6,26 +6,22 @@
 <title>Amigo secreto: lista de regalos</title>
 <link rel="preconnect" href="https://fonts.googleapis.com">
 <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
-<link href="https://fonts.googleapis.com/css2?family=Atkinson+Hyperlegible:wght@400;700&family=Mountains+of+Christmas:wght@700&display=swap" rel="stylesheet">
+<link href="https://fonts.googleapis.com/css2?family=Atkinson+Hyperlegible:wght@400;700&family=Playfair+Display:ital,wght@0,600;0,700;1,400&display=swap" rel="stylesheet">
 <style>
 :root {
-  --bg-cream: #f4efe6;
-  --card-bg: rgba(255, 255, 255, 0.96);
-  --ink: #1b261d;
-  --muted: #4a5a4e;
-  --line: #c3d2c6;
-  --pine: #1b4d36;
-  --pine-hover: #123826;
+  --bg-cream: #f5efe6;
+  --card-bg: rgba(253, 250, 245, 0.94);
+  --ink: #222924;
+  --muted: #5c665e;
+  --line: #d8cfc3;
+  --pine: #1b3b2b;
+  --pine-hover: #12291e;
   --pine-ink: #ffffff;
-  --red: #a81c24;
-  --red-hover: #821218;
+  --red: #8c1d24;
+  --red-hover: #6a1319;
   --red-ink: #ffffff;
-  --gold: #d4af37;
-  --focus: #0b57d0;
-  --soft: #eaf1ec;
+  --soft-bg: #eae4db;
   box-sizing: border-box;
-  padding-top: env(safe-area-inset-top,0px);
-  padding-bottom: env(safe-area-inset-bottom,0px);
 }
 
 *, *::before, *::after { box-sizing: inherit; }
@@ -38,98 +34,158 @@ body {
   background-size: 320px auto;
   background-attachment: fixed;
   color: var(--ink);
-  font-family: "Atkinson Hyperlegible", Verdana, Arial, sans-serif;
-  font-size: 1.2rem;
-  line-height: 1.55;
+  font-family: "Atkinson Hyperlegible", Georgia, sans-serif;
+  font-size: 1.15rem;
+  line-height: 1.6;
 }
 
 main {
-  max-width: 980px;
-  margin: 2rem auto;
-  padding: 1.5rem 1.25rem 4rem;
+  max-width: 880px;
+  margin: 3rem auto;
+  padding: 2.5rem 2rem 3.5rem;
   background: var(--card-bg);
-  border-radius: 20px;
-  box-shadow: 0 10px 30px rgba(0,0,0,0.15);
-  border: 3px solid var(--pine);
+  border-radius: 18px;
+  box-shadow: 0 16px 40px rgba(0, 0, 0, 0.08);
+  border: 1px solid var(--line);
 }
 
 h1 {
-  font-family: "Mountains of Christmas", cursive, sans-serif;
-  font-size: 3rem;
-  line-height: 1.1;
-  margin: 0.5rem 0;
+  font-family: "Playfair Display", Georgia, serif;
+  font-size: 2.8rem;
+  font-weight: 700;
+  line-height: 1.2;
+  margin: 0 0 0.5rem;
   color: var(--red);
   text-align: center;
-  letter-spacing: 1px;
+  letter-spacing: -0.5px;
 }
 
-h2 { 
-  font-family: "Mountains of Christmas", cursive, sans-serif;
-  font-size: 2.2rem; 
-  margin: 0 0 0.8rem; 
-  color: var(--pine); 
-  letter-spacing: 0.5px;
+h2 {
+  font-family: "Playfair Display", Georgia, serif;
+  font-size: 1.8rem;
+  font-weight: 600;
+  margin: 0 0 1rem;
+  color: var(--pine);
 }
 
 .intro {
   color: var(--muted);
-  margin: 0 auto 1.5rem;
-  max-width: 36em;
+  margin: 0 auto 2rem;
+  max-width: 34em;
   text-align: center;
+  font-size: 1.1rem;
 }
 
 .panel {
   background: #ffffff;
-  border: 2px solid var(--gold);
-  border-radius: 16px;
-  padding: 1.5rem;
-  box-shadow: 0 4px 12px rgba(0,0,0,0.05);
+  border: 1px solid var(--line);
+  border-radius: 12px;
+  padding: 1.75rem;
+  box-shadow: 0 4px 16px rgba(0,0,0,0.03);
 }
 
-label, .lbl { display: block; font-weight: 700; margin: 1rem 0 .35rem; color: var(--pine); }
-.hint { font-weight: 400; color: var(--muted); font-size: 1.05rem; }
+label, .lbl {
+  display: block;
+  font-weight: 700;
+  margin: 1.2rem 0 0.4rem;
+  color: var(--pine);
+  font-size: 1.05rem;
+}
+
+.hint {
+  font-weight: 400;
+  color: var(--muted);
+  font-size: 0.95rem;
+}
 
 input[type=text], textarea {
   width: 100%;
   font: inherit;
   color: var(--ink);
-  background: var(--bg-cream);
-  border: 2px solid var(--line);
-  border-radius: 10px;
-  padding: .75rem .9rem;
-  min-height: 3.4rem;
+  background: #ffffff;
+  border: 1px solid #c5bcae;
+  border-radius: 8px;
+  padding: 0.8rem 1rem;
+  transition: border-color 0.2s, box-shadow 0.2s;
 }
-textarea { min-height: 5.5rem; resize: vertical; }
+
+input[type=text]:focus, textarea:focus {
+  outline: none;
+  border-color: var(--pine);
+  box-shadow: 0 0 0 3px rgba(27, 59, 43, 0.12);
+}
+
+textarea {
+  min-height: 5.5rem;
+  resize: vertical;
+}
 
 .btn {
   display: inline-flex;
   align-items: center;
   justify-content: center;
-  gap: .5rem;
   font: inherit;
   font-weight: 700;
-  min-height: 3.5rem;
-  padding: .7rem 1.4rem;
-  border-radius: 12px;
-  border: 2px solid var(--pine);
+  min-height: 3.2rem;
+  padding: 0.75rem 1.5rem;
+  border-radius: 8px;
+  border: 1px solid var(--pine);
   background: var(--pine);
   color: var(--pine-ink);
   cursor: pointer;
-  transition: background 0.2s ease, transform 0.1s ease;
+  transition: background-color 0.2s, border-color 0.2s;
 }
-.btn:hover { background: var(--pine-hover); }
-.btn.alt { background: transparent; color: var(--pine); border-color: var(--pine); }
-.btn.alt:hover { background: var(--soft); }
-.btn.del { background: transparent; border-color: var(--red); color: var(--red); }
-.btn.del:hover { background: #fde8e8; }
-.btn.del.sure { background: var(--red); color: var(--red-ink); }
 
-:focus-visible { outline: 4px solid var(--focus); outline-offset: 3px; }
+.btn:hover {
+  background: var(--pine-hover);
+  border-color: var(--pine-hover);
+}
+
+.btn.alt {
+  background: transparent;
+  color: var(--pine);
+  border: 1px solid var(--pine);
+}
+
+.btn.alt:hover {
+  background: rgba(27, 59, 43, 0.06);
+}
+
+.btn.del {
+  background: transparent;
+  border-color: #d1a3a6;
+  color: var(--red);
+}
+
+.btn.del:hover {
+  background: #fdf2f2;
+}
+
+.btn.del.sure {
+  background: var(--red);
+  color: var(--red-ink);
+  border-color: var(--red);
+}
+
 input[type=file] { position: absolute; opacity: 0; width: 1px; height: 1px; }
 
-#pick:focus-within { outline: 4px solid var(--focus); outline-offset: 3px; }
-#preview { display: none; width: 100%; max-height: 300px; object-fit: contain; background: var(--soft); border-radius: 10px; margin-top: .8rem; }
-#msg { min-height: 1.6em; margin: .9rem 0 0; font-weight: 700; }
+#preview {
+  display: none;
+  width: 100%;
+  max-height: 280px;
+  object-fit: contain;
+  background: var(--soft-bg);
+  border-radius: 8px;
+  margin-top: 1rem;
+  border: 1px solid var(--line);
+}
+
+#msg {
+  min-height: 1.5em;
+  margin: 1rem 0 0;
+  font-weight: 700;
+  font-size: 1rem;
+}
 #msg.err { color: var(--red); }
 #msg.ok { color: var(--pine); }
 
@@ -138,74 +194,189 @@ input[type=file] { position: absolute; opacity: 0; width: 1px; height: 1px; }
   flex-wrap: wrap;
   align-items: baseline;
   justify-content: space-between;
-  gap: .5rem;
-  margin: 2.5rem 0 1rem;
-  border-bottom: 2px dashed var(--gold);
-  padding-bottom: 0.5rem;
+  gap: 0.5rem;
+  margin: 2.5rem 0 1.25rem;
+  border-bottom: 1px solid var(--line);
+  padding-bottom: 0.75rem;
 }
+
 .list-head h2 { margin: 0; }
 
 details.person {
   background: #ffffff;
-  border: 2px solid var(--pine);
-  border-radius: 14px;
-  margin-bottom: 1.25rem;
+  border: 1px solid var(--line);
+  border-radius: 10px;
+  margin-bottom: 1rem;
   overflow: hidden;
-  box-shadow: 0 4px 10px rgba(0,0,0,0.04);
+  box-shadow: 0 2px 8px rgba(0,0,0,0.02);
 }
+
 summary.name-row {
-  padding: 1.1rem 1.25rem;
-  font-family: "Mountains of Christmas", cursive, sans-serif;
-  font-size: 1.8rem;
-  font-weight: 700;
+  padding: 1.1rem 1.4rem;
+  font-family: "Playfair Display", Georgia, serif;
+  font-size: 1.45rem;
+  font-weight: 600;
   color: var(--pine);
   cursor: pointer;
   list-style: none;
   display: flex;
   justify-content: space-between;
   align-items: center;
-  background: #fdfbf7;
-  letter-spacing: 0.5px;
+  background: #ffffff;
+  transition: background-color 0.2s;
 }
-summary.name-row::-webkit-details-marker { display: none; }
-summary.name-row::after { content: "▼"; font-family: "Atkinson Hyperlegible", sans-serif; font-size: 0.9rem; color: var(--red); }
-details[open] summary.name-row::after { content: "▲"; }
-details[open] summary.name-row { border-bottom: 2px solid var(--line); background: #f4efe6; }
 
-.person-gifts { padding: 1.25rem; background: #faf8f5; }
-.grid { display: grid; grid-template-columns: repeat(auto-fill, minmax(270px, 1fr)); gap: 1.25rem; }
+summary.name-row:hover {
+  background: #faf7f2;
+}
+
+summary.name-row::-webkit-details-marker { display: none; }
+summary.name-row::after {
+  content: "▼";
+  font-family: "Atkinson Hyperlegible", sans-serif;
+  font-size: 0.75rem;
+  color: var(--red);
+  transition: transform 0.2s ease;
+}
+
+details[open] summary.name-row::after {
+  transform: rotate(180deg);
+}
+
+details[open] summary.name-row {
+  border-bottom: 1px solid var(--line);
+  background: #faf7f2;
+}
+
+.person-gifts {
+  padding: 1.25rem;
+  background: #fdfbf7;
+}
+
+.grid {
+  display: grid;
+  grid-template-columns: repeat(auto-fill, minmax(250px, 1fr));
+  gap: 1.25rem;
+}
 
 .gift {
   background: #ffffff;
-  border: 2px solid var(--line);
-  border-radius: 14px;
+  border: 1px solid var(--line);
+  border-radius: 10px;
   overflow: hidden;
   display: flex;
   flex-direction: column;
 }
-.gift img { width: 100%; aspect-ratio: 4/3; object-fit: cover; background: var(--soft); }
-.noimg { aspect-ratio: 4/3; display: grid; place-items: center; background: var(--soft); color: var(--muted); font-size: 1.1rem; }
-.gift .body { padding: 1rem 1.1rem 1.2rem; display: flex; flex-direction: column; gap: .3rem; flex: 1; }
-.gift h3 { margin: 0; font-size: 1.4rem; line-height: 1.25; color: var(--red); }
-.note { margin: 0; color: var(--muted); overflow-wrap: anywhere; }
-.gift .btn { margin-top: auto; align-self: flex-start; }
 
-.empty { border: 2px dashed var(--line); border-radius: 14px; padding: 2rem 1.25rem; text-align: center; color: var(--muted); }
-.notice { border: 2px solid var(--red); background: #fde8e8; border-radius: 12px; padding: 1rem 1.1rem; margin: 1rem 0; font-weight: 700; color: var(--red); }
+.gift img {
+  width: 100%;
+  aspect-ratio: 4/3;
+  object-fit: cover;
+  background: var(--soft-bg);
+}
 
-.top { display: flex; flex-wrap: wrap; gap: 1rem; align-items: center; margin: 0 0 1.25rem; }
-.top .btn { flex: 1 1 260px; font-size: 1.35rem; min-height: 4rem; background: var(--red); border-color: var(--red); }
-.top .btn:hover { background: var(--red-hover); }
+.noimg {
+  aspect-ratio: 4/3;
+  display: grid;
+  place-items: center;
+  background: var(--soft-bg);
+  color: var(--muted);
+  font-size: 1rem;
+}
+
+.gift .body {
+  padding: 1rem 1.1rem;
+  display: flex;
+  flex-direction: column;
+  gap: 0.4rem;
+  flex: 1;
+}
+
+.gift h3 {
+  margin: 0;
+  font-family: "Playfair Display", Georgia, serif;
+  font-size: 1.3rem;
+  font-weight: 600;
+  line-height: 1.3;
+  color: var(--red);
+}
+
+.note {
+  margin: 0;
+  color: var(--muted);
+  font-size: 1rem;
+  overflow-wrap: anywhere;
+}
+
+.gift .btn {
+  margin-top: auto;
+  align-self: flex-start;
+  padding: 0.5rem 1rem;
+  min-height: 2.5rem;
+  font-size: 0.95rem;
+}
+
+.empty {
+  border: 1px dashed var(--line);
+  border-radius: 10px;
+  padding: 2.5rem 1.5rem;
+  text-align: center;
+  color: var(--muted);
+  background: #ffffff;
+}
+
+.notice {
+  border: 1px solid var(--red);
+  background: #fdf2f2;
+  border-radius: 8px;
+  padding: 1rem 1.2rem;
+  margin: 1rem 0;
+  font-weight: 700;
+  color: var(--red);
+}
+
+.top {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 1rem;
+  align-items: center;
+  margin: 0 0 1.5rem;
+}
+
+.top .btn {
+  flex: 1 1 260px;
+  font-size: 1.2rem;
+  min-height: 3.6rem;
+  background: var(--red);
+  border-color: var(--red);
+}
+
+.top .btn:hover {
+  background: var(--red-hover);
+  border-color: var(--red-hover);
+}
 
 [hidden] { display: none !important; }
-.sub { display: flex; gap: .6rem; margin-top: 1.25rem; }
+
+.sub {
+  display: flex;
+  gap: 0.75rem;
+  margin-top: 1.5rem;
+}
+
 .sub .btn { flex: 1; }
 
-@media (max-width: 520px) {
-  main { margin: 0; border-radius: 0; border: none; }
+@media (max-width: 600px) {
+  main {
+    margin: 0;
+    border-radius: 0;
+    border: none;
+    padding: 2rem 1rem 3rem;
+  }
   h1 { font-size: 2.2rem; }
-  summary.name-row { font-size: 1.5rem; }
-  body { font-size: 1.1rem; }
+  h2 { font-size: 1.5rem; }
+  summary.name-row { font-size: 1.25rem; padding: 1rem; }
+  body { font-size: 1.05rem; }
 }
 </style>
 </head>
@@ -216,11 +387,11 @@ details[open] summary.name-row { border-bottom: 2px solid var(--line); backgroun
   <div id="aviso" class="notice" hidden></div>
 
   <div class="top">
-    <button class="btn" id="abrir" type="button">Agregar mi opcion de regalo</button>
+    <button class="btn" id="abrir" type="button">Agregar mi opción de regalo</button>
   </div>
 
   <section class="panel" id="form" aria-labelledby="t-nuevo" hidden>
-    <h2 id="t-nuevo">Agregar opcion de regalo</h2>
+    <h2 id="t-nuevo">Agregar opción de regalo</h2>
 
     <label for="nombre">Tu nombre</label>
     <input type="text" id="nombre" autocomplete="given-name" placeholder="Escribe tu nombre completo">
