@@ -21,11 +21,6 @@
     color-scheme: dark;
   }
 }
-:root[data-theme="dark"]{
-  --bg:#121a15; --card:#1b251f; --ink:#f2f6f3; --muted:#b9c6bd; --line:#3a4a40;
-  --pine:#7fcfa4; --pine-ink:#0c1f15; --red:#ff9aa0; --red-ink:#2a0a0d; --focus:#8ab4ff; --soft:#233229;
-  color-scheme: dark;
-}
 html{scroll-padding-top:env(safe-area-inset-top,0px)}
 *,*::before,*::after{box-sizing:inherit}
 body{margin:0;background:var(--bg);color:var(--ink);font-family:"Atkinson Hyperlegible",Verdana,Arial,sans-serif;font-size:1.25rem;line-height:1.55}
@@ -42,7 +37,6 @@ textarea{min-height:5.5rem;resize:vertical}
 .btn.alt{background:transparent;color:var(--pine)}
 .btn.del{background:transparent;border-color:var(--red);color:var(--red)}
 .btn.del.sure{background:var(--red);color:var(--red-ink)}
-.btn.big{width:100%;margin-top:1.5rem;font-size:1.35rem;min-height:4rem}
 :focus-visible{outline:4px solid var(--focus);outline-offset:3px}
 input[type=file]{position:absolute;opacity:0;width:1px;height:1px}
 #pick:focus-within{outline:4px solid var(--focus);outline-offset:3px}
@@ -52,13 +46,22 @@ input[type=file]{position:absolute;opacity:0;width:1px;height:1px}
 #msg.ok{color:var(--pine)}
 .list-head{display:flex;flex-wrap:wrap;align-items:baseline;justify-content:space-between;gap:.5rem;margin:2.5rem 0 1rem}
 .list-head h2{margin:0}
+
+/* ESTILOS PARA EL MENÚ DESPLEGABLE DE CADA PERSONA */
+details.person { background:var(--card); border:2px solid var(--line); border-radius:14px; margin-bottom:1.25rem; overflow:hidden; }
+summary.name-row { padding:1.25rem; font-size:1.4rem; font-weight:700; color:var(--pine); cursor:pointer; list-style:none; display:flex; justify-content:space-between; align-items:center; }
+summary.name-row::-webkit-details-marker { display:none; }
+summary.name-row::after { content:"▼"; font-size:1.1rem; color:var(--muted); }
+details[open] summary.name-row::after { content:"▲"; }
+details[open] summary.name-row { border-bottom:2px solid var(--line); }
+.person-gifts { padding:1.25rem; background:var(--bg); }
+
 .grid{display:grid;grid-template-columns:repeat(auto-fill,minmax(280px,1fr));gap:1.25rem}
 .gift{background:var(--card);border:2px solid var(--line);border-radius:14px;overflow:hidden;display:flex;flex-direction:column}
 .gift img{width:100%;aspect-ratio:4/3;object-fit:cover;background:var(--soft)}
 .noimg{aspect-ratio:4/3;display:grid;place-items:center;background:var(--soft);color:var(--muted);font-size:1.1rem}
 .gift .body{padding:1rem 1.1rem 1.2rem;display:flex;flex-direction:column;gap:.3rem;flex:1}
 .gift h3{margin:0;font-size:1.45rem;line-height:1.25}
-.who{color:var(--pine);font-weight:700;margin:0}
 .note{margin:0;color:var(--muted);overflow-wrap:anywhere}
 .gift .btn{margin-top:auto;align-self:flex-start}
 .empty{border:2px dashed var(--line);border-radius:14px;padding:2rem 1.25rem;text-align:center;color:var(--muted)}
@@ -75,7 +78,7 @@ input[type=file]{position:absolute;opacity:0;width:1px;height:1px}
 <body>
 <main>
   <h1>Regalos del amigo secreto</h1>
-  <p class="intro">Aquí aparecen los regalos que quiere cada persona. Para agregar el tuyo, toca el botón verde.</p>
+  <p class="intro">Aquí aparecen los regalos que quiere cada persona. Para agregar los tuyos (hasta 3 opciones), toca el botón verde y llena el formulario por cada uno.</p>
   <div id="aviso" class="notice" hidden></div>
 
   <div class="top">
@@ -83,7 +86,7 @@ input[type=file]{position:absolute;opacity:0;width:1px;height:1px}
   </div>
 
   <section class="panel" id="form" aria-labelledby="t-nuevo" hidden>
-    <h2 id="t-nuevo">Agregar mi regalo</h2>
+    <h2 id="t-nuevo">Agregar opción de regalo</h2>
 
     <label for="nombre">Tu nombre</label>
     <input type="text" id="nombre" autocomplete="given-name">
@@ -107,10 +110,11 @@ input[type=file]{position:absolute;opacity:0;width:1px;height:1px}
   </section>
 
   <div class="list-head">
-    <h2>Todos los regalos</h2>
+    <h2>Lista por participante</h2>
     <span id="count" class="hint"></span>
   </div>
-  <div id="lista" class="grid"></div>
+  <!-- El div lista ya no tiene la clase grid directamente -->
+  <div id="lista"></div>
 </main>
 
 <script type="module">
@@ -118,7 +122,6 @@ import { initializeApp } from "https://www.gstatic.com/firebasejs/10.12.2/fireba
 import { getFirestore, collection, addDoc, deleteDoc, doc, onSnapshot, query, orderBy, limit } from "https://www.gstatic.com/firebasejs/10.12.2/firebase-firestore.js";
 import { getAuth, signInAnonymously, onAuthStateChanged } from "https://www.gstatic.com/firebasejs/10.12.2/firebase-auth.js";
 
-/* PASO 7 del README: pega aquí los datos de tu proyecto de Firebase */
 const firebaseConfig = {
   apiKey: "AIzaSyB0EazZiJISCsNBZk10XBwk2GxEH5hnQMY",
   authDomain: "lista-amigo-secreto.firebaseapp.com",
@@ -128,7 +131,6 @@ const firebaseConfig = {
   appId: "1:690611971137:web:823f17f330de37b24a52c0",
   measurementId: "G-ZJV3L4PCL7"
 };
-
 
 var photo = "", myId = "", gifts = [], busy = false, db = null, auth = null;
 var $ = function(id){ return document.getElementById(id); };
@@ -172,7 +174,7 @@ $("foto").addEventListener("change", function(e){
   say("Cargando la foto…");
   resize(f, function(data){
     var p = $("preview");
-    if(!data){ photo = ""; p.style.display = "none"; say("No se pudo leer esa foto. Prueba con otra.", "err"); return; }
+    if(!data){ photo = ""; p.style.display = "none"; say("Error. Prueba con otra.", "err"); return; }
     photo = data; p.src = data; p.style.display = "block";
     $("pick").textContent = "Cambiar la foto";
     say("Foto lista.", "ok");
@@ -180,69 +182,94 @@ $("foto").addEventListener("change", function(e){
 });
 
 $("guardar").addEventListener("click", async function(){
-  if(!db){ say("Aún no se puede guardar. Revisa el aviso de arriba.", "err"); return; }
+  if(!db){ say("Error de base de datos.", "err"); return; }
   var nombre = $("nombre").value.trim(), regalo = $("regalo").value.trim();
-  if(!nombre){ say("Falta escribir tu nombre.", "err"); $("nombre").focus(); return; }
-  if(!regalo){ say("Falta escribir el nombre del regalo.", "err"); $("regalo").focus(); return; }
-  if(!myId){ say("Espera un momento e intenta de nuevo.", "err"); return; }
+  if(!nombre){ say("Falta tu nombre.", "err"); $("nombre").focus(); return; }
+  if(!regalo){ say("Falta el regalo.", "err"); $("regalo").focus(); return; }
+  if(!myId){ say("Espera un momento.", "err"); return; }
   if(busy) return;
   busy = true; $("guardar").disabled = true; say("Guardando…");
   try {
     await addDoc(collection(db, "gifts"), { nombre: nombre.slice(0,60), regalo: regalo.slice(0,100), detalle: $("detalle").value.trim().slice(0,300), foto: photo, owner: myId, ts: Date.now() });
-    cerrar(); say("¡Regalo guardado! Ya lo pueden ver todos.", "ok");
+    cerrar(); say("¡Regalo guardado!", "ok");
   } catch(e){
-    say("No se pudo guardar. Revisa tu internet e intenta de nuevo.", "err");
+    say("Error de conexión.", "err");
   }
   busy = false; $("guardar").disabled = false;
 });
 
 function render(){
   var box = $("lista"); box.textContent = "";
-  $("count").textContent = gifts.length === 1 ? "1 regalo" : gifts.length + " regalos";
+  
   if(!gifts.length){
-    var e = el("div", "empty", "Aún no hay regalos. Cuando alguien guarde el primero aparecerá aquí.");
-    e.style.gridColumn = "1 / -1"; box.appendChild(e); return;
+    $("count").textContent = "0 participantes";
+    var e = el("div", "empty", "Aún no hay regalos.");
+    box.appendChild(e); return;
   }
+
+  // 1. Agrupar los regalos por nombre (ignorando mayúsculas/minúsculas)
+  var grupos = {};
   gifts.forEach(function(g){
-    var d = g.data, card = el("article", "gift");
-    if(d.foto){ var im = document.createElement("img"); im.src = d.foto; im.alt = "Foto de: " + d.regalo; card.appendChild(im); }
-    else card.appendChild(el("div", "noimg", "Sin foto"));
-    var body = el("div", "body");
-    body.appendChild(el("h3", "", d.regalo || ""));
-    body.appendChild(el("p", "who", "Lo quiere: " + (d.nombre || "")));
-    if(d.detalle) body.appendChild(el("p", "note", d.detalle));
-    if(myId && d.owner === myId){
-      var b = el("button", "btn del", "Quitar mi regalo"), t; b.type = "button";
-      b.addEventListener("click", function(){
-        if(!b.classList.contains("sure")){
-          b.classList.add("sure"); b.textContent = "Toca otra vez para quitar";
-          t = setTimeout(function(){ b.classList.remove("sure"); b.textContent = "Quitar mi regalo"; }, 4000);
-          return;
-        }
-        clearTimeout(t);
-        deleteDoc(doc(db, "gifts", g.id)).catch(function(){ aviso("No se pudo quitar el regalo. Intenta de nuevo."); });
-      });
-      body.appendChild(b);
-    }
-    card.appendChild(body); box.appendChild(card);
+    var nombreReal = (g.data.nombre || "Sin nombre").trim();
+    var llave = nombreReal.toLowerCase(); 
+    if(!grupos[llave]) grupos[llave] = { nombre: nombreReal, regalos: [] };
+    grupos[llave].regalos.push(g);
+  });
+
+  var cantPersonas = Object.keys(grupos).length;
+  $("count").textContent = cantPersonas + (cantPersonas === 1 ? " participante" : " participantes");
+
+  // 2. Crear los menús desplegables por persona
+  Object.values(grupos).forEach(function(persona){
+    var details = el("details", "person");
+    var summary = el("summary", "name-row", persona.nombre + " (" + persona.regalos.length + " opciones)");
+    details.appendChild(summary);
+
+    var giftsContainer = el("div", "person-gifts");
+    var grid = el("div", "grid"); // El grid ahora vive dentro del contenedor de la persona
+
+    persona.regalos.forEach(function(g){
+      var d = g.data, card = el("article", "gift");
+      if(d.foto){ var im = document.createElement("img"); im.src = d.foto; im.alt = "Foto"; card.appendChild(im); }
+      else card.appendChild(el("div", "noimg", "Sin foto"));
+      
+      var body = el("div", "body");
+      body.appendChild(el("h3", "", d.regalo || ""));
+      // Se elimina la línea "Lo quiere: Nombre" porque ya está en el título del desplegable
+      if(d.detalle) body.appendChild(el("p", "note", d.detalle));
+      
+      if(myId && d.owner === myId){
+        var b = el("button", "btn del", "Quitar"), t; b.type = "button";
+        b.addEventListener("click", function(){
+          if(!b.classList.contains("sure")){
+            b.classList.add("sure"); b.textContent = "¿Seguro?";
+            t = setTimeout(function(){ b.classList.remove("sure"); b.textContent = "Quitar"; }, 4000);
+            return;
+          }
+          clearTimeout(t);
+          deleteDoc(doc(db, "gifts", g.id)).catch(function(){ aviso("Error al quitar."); });
+        });
+        body.appendChild(b);
+      }
+      card.appendChild(body); grid.appendChild(card);
+    });
+
+    giftsContainer.appendChild(grid);
+    details.appendChild(giftsContainer);
+    box.appendChild(details);
   });
 }
 
-render();
-if(firebaseConfig.apiKey.indexOf("PEGA") === 0){
-  aviso("Falta conectar la base de datos. Sigue los pasos del archivo LEEME.md.");
-} else {
-  try {
-    var app = initializeApp(firebaseConfig);
-    db = getFirestore(app); auth = getAuth(app);
-    onAuthStateChanged(auth, function(u){ if(u) myId = u.uid; render(); });
-    signInAnonymously(auth).catch(function(){ aviso("No se pudo entrar. Revisa el paso de “Authentication” en LEEME.md."); });
-    onSnapshot(query(collection(db, "gifts"), orderBy("ts", "desc"), limit(300)), function(snap){
-      gifts = snap.docs.map(function(x){ return { id: x.id, data: x.data() }; });
-      render();
-    }, function(){ aviso("No se pudo cargar la lista. Recarga la página."); });
-  } catch(e){ aviso("Hay un error en los datos de Firebase. Revisa el paso 7 de LEEME.md."); }
-}
+try {
+  var app = initializeApp(firebaseConfig);
+  db = getFirestore(app); auth = getAuth(app);
+  onAuthStateChanged(auth, function(u){ if(u) myId = u.uid; render(); });
+  signInAnonymously(auth).catch(function(){ aviso("Error de autenticación."); });
+  onSnapshot(query(collection(db, "gifts"), orderBy("ts", "desc"), limit(300)), function(snap){
+    gifts = snap.docs.map(function(x){ return { id: x.id, data: x.data() }; });
+    render();
+  }, function(){ aviso("Error al cargar la lista."); });
+} catch(e){ aviso("Error en los datos de Firebase."); }
 </script>
 </body>
 </html>
