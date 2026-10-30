@@ -3,8 +3,10 @@
 <head>
 <meta charset="utf-8">
 <meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover">
-<title>🎄 Amigo secreto: lista de regalos 🎁</title>
-<link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Atkinson+Hyperlegible:wght@400;700&display=swap">
+<title>Amigo secreto: lista de regalos</title>
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=Atkinson+Hyperlegible:wght@400;700&family=Mountains+of+Christmas:wght@700&display=swap" rel="stylesheet">
 <style>
 :root {
   --bg-cream: #f4efe6;
@@ -37,7 +39,7 @@ body {
   background-attachment: fixed;
   color: var(--ink);
   font-family: "Atkinson Hyperlegible", Verdana, Arial, sans-serif;
-  font-size: 1.25rem;
+  font-size: 1.2rem;
   line-height: 1.55;
 }
 
@@ -52,14 +54,22 @@ main {
 }
 
 h1 {
-  font-size: 2.3rem;
-  line-height: 1.2;
+  font-family: "Mountains of Christmas", cursive, sans-serif;
+  font-size: 3rem;
+  line-height: 1.1;
   margin: 0.5rem 0;
   color: var(--red);
   text-align: center;
+  letter-spacing: 1px;
 }
 
-h2 { font-size: 1.6rem; margin: 0 0 1rem; color: var(--pine); }
+h2 { 
+  font-family: "Mountains of Christmas", cursive, sans-serif;
+  font-size: 2.2rem; 
+  margin: 0 0 0.8rem; 
+  color: var(--pine); 
+  letter-spacing: 0.5px;
+}
 
 .intro {
   color: var(--muted);
@@ -135,7 +145,6 @@ input[type=file] { position: absolute; opacity: 0; width: 1px; height: 1px; }
 }
 .list-head h2 { margin: 0; }
 
-/* DESPLEGABLES NAVIDEÑOS */
 details.person {
   background: #ffffff;
   border: 2px solid var(--pine);
@@ -146,7 +155,8 @@ details.person {
 }
 summary.name-row {
   padding: 1.1rem 1.25rem;
-  font-size: 1.4rem;
+  font-family: "Mountains of Christmas", cursive, sans-serif;
+  font-size: 1.8rem;
   font-weight: 700;
   color: var(--pine);
   cursor: pointer;
@@ -155,9 +165,10 @@ summary.name-row {
   justify-content: space-between;
   align-items: center;
   background: #fdfbf7;
+  letter-spacing: 0.5px;
 }
 summary.name-row::-webkit-details-marker { display: none; }
-summary.name-row::after { content: "▼"; font-size: 1rem; color: var(--red); }
+summary.name-row::after { content: "▼"; font-family: "Atkinson Hyperlegible", sans-serif; font-size: 0.9rem; color: var(--red); }
 details[open] summary.name-row::after { content: "▲"; }
 details[open] summary.name-row { border-bottom: 2px solid var(--line); background: #f4efe6; }
 
@@ -192,23 +203,24 @@ details[open] summary.name-row { border-bottom: 2px solid var(--line); backgroun
 
 @media (max-width: 520px) {
   main { margin: 0; border-radius: 0; border: none; }
-  h1 { font-size: 1.8rem; }
-  body { font-size: 1.15rem; }
+  h1 { font-size: 2.2rem; }
+  summary.name-row { font-size: 1.5rem; }
+  body { font-size: 1.1rem; }
 }
 </style>
 </head>
 <body>
 <main>
-  <h1>🎄 Regalos del Amigo Secreto 🎁</h1>
-  <p class="intro">Toca el botón rojo para agregar tus opciones de regalo. Cada participante puede desplegar su nombre para ver lo que ha pedido.</p>
+  <h1>Regalos del Amigo Secreto</h1>
+  <p class="intro">Toca el botón principal para agregar tus opciones de regalo. Cada participante puede desplegar su nombre para ver las opciones registradas.</p>
   <div id="aviso" class="notice" hidden></div>
 
   <div class="top">
-    <button class="btn" id="abrir" type="button">✨ Agregar mi opción de regalo</button>
+    <button class="btn" id="abrir" type="button">Agregar mi opcion de regalo</button>
   </div>
 
   <section class="panel" id="form" aria-labelledby="t-nuevo" hidden>
-    <h2 id="t-nuevo">🎁 Agregar opción de regalo</h2>
+    <h2 id="t-nuevo">Agregar opcion de regalo</h2>
 
     <label for="nombre">Tu nombre</label>
     <input type="text" id="nombre" autocomplete="given-name" placeholder="Escribe tu nombre completo">
@@ -220,19 +232,19 @@ details[open] summary.name-row { border-bottom: 2px solid var(--line); backgroun
     <textarea id="detalle"></textarea>
 
     <span class="lbl">Foto del regalo <span class="hint">(opcional)</span></span>
-    <label class="btn alt" id="pick" for="foto" style="margin:0">📷 Tomar o elegir foto</label>
+    <label class="btn alt" id="pick" for="foto" style="margin:0">Tomar o elegir foto</label>
     <input type="file" id="foto" accept="image/*">
     <img id="preview" alt="Vista previa de la foto elegida">
 
     <div class="sub">
-      <button class="btn" id="guardar" type="button">💾 Guardar regalo</button>
-      <button class="btn alt" id="cancelar" type="button">❌ Cancelar</button>
+      <button class="btn" id="guardar" type="button">Guardar regalo</button>
+      <button class="btn alt" id="cancelar" type="button">Cancelar</button>
     </div>
     <p id="msg" role="status" aria-live="polite"></p>
   </section>
 
   <div class="list-head">
-    <h2>👥 Lista por participante</h2>
+    <h2>Lista por participante</h2>
     <span id="count" class="hint"></span>
   </div>
   <div id="lista"></div>
@@ -285,7 +297,7 @@ $("abrir").addEventListener("click", function(){
 function cerrar(){
   $("form").hidden = true; $("abrir").hidden = false;
   $("regalo").value = ""; $("detalle").value = ""; $("foto").value = "";
-  photo = ""; $("preview").style.display = "none"; $("pick").textContent = "📷 Tomar o elegir foto"; say("");
+  photo = ""; $("preview").style.display = "none"; $("pick").textContent = "Tomar o elegir foto"; say("");
 }
 $("cancelar").addEventListener("click", cerrar);
 
@@ -297,7 +309,7 @@ $("foto").addEventListener("change", function(e){
     var p = $("preview");
     if(!data){ photo = ""; p.style.display = "none"; say("Error al leer la foto. Intenta otra.", "err"); return; }
     photo = data; p.src = data; p.style.display = "block";
-    $("pick").textContent = "🔄 Cambiar la foto";
+    $("pick").textContent = "Cambiar la foto";
     say("Foto lista.", "ok");
   });
 });
@@ -324,7 +336,7 @@ function render(){
   
   if(!gifts.length){
     $("count").textContent = "0 participantes";
-    var e = el("div", "empty", "Aún no hay regalos registrados. ¡Sé el primero en agregar el tuyo!");
+    var e = el("div", "empty", "Aún no hay regalos registrados. Agrega el tuyo en el botón superior.");
     box.appendChild(e); return;
   }
 
@@ -341,7 +353,7 @@ function render(){
 
   Object.values(grupos).forEach(function(persona){
     var details = el("details", "person");
-    var summary = el("summary", "name-row", "🎁 " + persona.nombre + " (" + persona.regalos.length + " opciones)");
+    var summary = el("summary", "name-row", persona.nombre + " (" + persona.regalos.length + " opciones)");
     details.appendChild(summary);
 
     var giftsContainer = el("div", "person-gifts");
@@ -357,11 +369,11 @@ function render(){
       if(d.detalle) body.appendChild(el("p", "note", d.detalle));
       
       if(myId && d.owner === myId){
-        var b = el("button", "btn del", "🗑️ Quitar"), t; b.type = "button";
+        var b = el("button", "btn del", "Quitar"), t; b.type = "button";
         b.addEventListener("click", function(){
           if(!b.classList.contains("sure")){
-            b.classList.add("sure"); b.textContent = "¿Confirmar?";
-            t = setTimeout(function(){ b.classList.remove("sure"); b.textContent = "🗑️ Quitar"; }, 4000);
+            b.classList.add("sure"); b.textContent = "Confirmar eliminación";
+            t = setTimeout(function(){ b.classList.remove("sure"); b.textContent = "Quitar"; }, 4000);
             return;
           }
           clearTimeout(t);
