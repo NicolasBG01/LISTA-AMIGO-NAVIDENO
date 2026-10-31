@@ -271,20 +271,24 @@ details[open] summary.name-row {
   flex-direction: column;
 }
 
+/* ENCUADRE RECTANGULAR VERTICAL COMPLETO PARA LAS FOTOS */
 .gift img {
   width: 100%;
-  aspect-ratio: 4/3;
-  object-fit: cover;
-  background: var(--soft-bg);
+  aspect-ratio: 3/4;
+  object-fit: contain;
+  padding: 0.6rem;
+  background: #ffffff;
+  border-bottom: 1px solid var(--line);
 }
 
 .noimg {
-  aspect-ratio: 4/3;
+  aspect-ratio: 3/4;
   display: grid;
   place-items: center;
   background: var(--soft-bg);
   color: var(--muted);
   font-size: 1.1rem;
+  border-bottom: 1px solid var(--line);
 }
 
 .gift .body {
